@@ -22,10 +22,11 @@ const create = (account) => {
   );
 }
 
-async function updateById(id, account) {
+function updateById(id, account) {
   // DO YOUR MAGIC
-  await db('accounts').where('id', id).update({name: account.name, budget: account.budget});
-  return getById(id);
+  return db('accounts').where('id', id).update(account)
+  .then(id => getById(id)
+  )
 }
 
 async function deleteById(id) {

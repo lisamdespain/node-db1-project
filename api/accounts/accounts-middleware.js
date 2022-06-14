@@ -40,7 +40,7 @@ exports.checkAccountId = (req, res, next) => {
   // DO YOUR MAGIC
   Accounts.getById(req.params.id)
   .then(result =>{
-    if (result == null){
+    if (!result){
       res.status(404).json({message: "account not found"})
       return;
     }
