@@ -10,15 +10,21 @@ async function getAll() {
   return db('accounts').where('id', id).first();
 }
 
-async function create(account) {
+function getByName(name) {
   // DO YOUR MAGIC
-  const [id] = await db('accounts').insert(account);
-  return getById(id);
+  return db('accounts').where('name', name).first();
+}
+
+const create = (account) => {
+  // DO YOUR MAGIC
+  return db('accounts').insert(account).then(([id]) =>
+    getById(id)
+  );
 }
 
 async function updateById(id, account) {
   // DO YOUR MAGIC
-  await db('accounts').where('id', id).update(account);
+  await db('accounts').where('id', id).update({name: account.name, budget: account.budget});
   return getById(id);
 }
 
@@ -33,4 +39,5 @@ module.exports = {
   create,
   updateById,
   deleteById,
+  getByName
 }

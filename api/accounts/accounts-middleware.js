@@ -24,15 +24,17 @@ exports.checkAccountPayload = (req, res, next) => {
 
 exports.checkAccountNameUnique = (req, res, next) => {
   // DO YOUR MAGIC
-  const uniqueName = Accounts.getAll();
-  const thisName = uniqueName.find(name => req.account.name === name);
-  if (thisName.trim()){
+  Accounts.getByName(req.body.name)
+  .then(result =>{
+    if (result){
     res.status(400).json({message: 'that name is taken'})
-    return;
-  } else {
-    next();
+return;
+  } 
+  next();
 }
+  )
 }
+
 
 exports.checkAccountId = (req, res, next) => {
   // DO YOUR MAGIC
