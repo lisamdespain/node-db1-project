@@ -13,7 +13,7 @@ async function getAll() {
 async function create(account) {
   // DO YOUR MAGIC
   const [id] = await db('accounts').insert(account);
-  return getById(id)
+  return getById(id);
 }
 
 async function updateById(id, account) {

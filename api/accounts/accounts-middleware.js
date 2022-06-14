@@ -5,20 +5,29 @@ exports.checkAccountPayload = (req, res, next) => {
   // Note: you can either write "manual" validation logic
   // or use the Yup library (not currently installed)
   let { name, budget } = req.body;
-  if (name.trim() == '' || name == null || budget == null){
-    res.status(400).json({message: 'Please add an account name and budget to continue'})
+  if (name === undefined || budget === undefined){
+    res.status(400).json({message: 'Name and budget are required'})
+    return;
+  } else if (name.trim().length < 3 || name.trim().length > 100){
+    res.status(400).json({message: "name of account must be between 3 and 100"})
+    return;
+  } else if (budget !== Number){
+    res.status(400).json({message: "budget of account must be a number"})
+    return;
+  } else if (budget < 0 || budget > 1000000){
+    res.status(400).json({message: "budget of account is too large or too small"})
     return;
   }
-  req.account = {name: name.trim(), budget: budget}
+  req.newAccount = {name: name.trim(), budget: budget}
   next();
 }
 
 exports.checkAccountNameUnique = (req, res, next) => {
   // DO YOUR MAGIC
   const uniqueName = Accounts.getAll();
-  const thisName = uniqueName.filter(req.account.name);
-  if (req.account.name === thisName){
-    res.status(400).json({message: 'That name already exists'})
+  const thisName = uniqueName.find(name => req.account.name === name);
+  if (thisName.trim()){
+    res.status(400).json({message: 'that name is taken'})
     return;
   } else {
     next();
