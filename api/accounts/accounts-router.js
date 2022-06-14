@@ -29,7 +29,7 @@ router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) =
   })
 })
 
-router.put('/:id', checkAccountId, (req, res, next) => {
+router.put('/:id', checkAccountId, checkAccountPayload, (req, res, next) => {
   // DO YOUR MAGIC
   Accounts.updateById(req.params.id)
   .then(result =>{
